@@ -46,7 +46,7 @@ If you want to change the default configuration (9600/8n1 and other parameters, 
 More information on https://github.com/3cky/mbusd/blob/master/conf/mbusd.conf.example
 
 ```shell
-docker run -d -v /dev/serial:/dev/serial --privileged -v /etc/mbusd.conf:/etc/mbusd.conf -p 1502:1502  --name=mbusd  quenorha/mbusd
+docker run -d -v /dev/serial:/dev/serial --privileged -v /etc/mbusd.conf:/opt/mbusd.conf -p 1502:1502  --name=mbusd  quenorha/mbusd
 ```
 
 Run it interactively 
