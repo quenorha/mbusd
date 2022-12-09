@@ -23,14 +23,14 @@ The following script has to be called prior the start of the container.
 /etc/config-tools/set_serial_mode rs485
 ```
 
-* [WAGO PFC & Touch Panel](https://github.com/WAGO/docker-ipk)
 
+### Build (optional)
+If you want to build by your own with the last version of mbusd here is the procedure :
 ```shell
-wget https://github.com/WAGO/docker-ipk/releases/download/v1.0.0/docker_18.09.0_3332.ipk
+docker run -ti --rm -v ${HOME}:/root -v $(pwd):/git alpine/git clone https://github.com/quenorha/mbusd
+cd mbusd
+docker build -t quenorha/mbusd .
 ```
-```shell
-opkg install -V3 docker_18.09.0_3332.ipk
- ```
 
 
 
@@ -39,21 +39,25 @@ opkg install -V3 docker_18.09.0_3332.ipk
 #### Container Parameters
 
 ```shell
-docker run -d -v /dev/serial:/dev/serial --privileged -p 1502:1502  --name=mbusd  quenorha/mbusd
+docker run -d -v /dev/serial:/dev/serial --privileged -p 1502:502  --name=mbusd  quenorha/mbusd
 ```
+
+You can use the default port 502 but only if it isn't used in the runtime.
 
 If you want to change the default configuration (9600/8n1 and other parameters, just keep the /dev/serial device name)
 More information on https://github.com/3cky/mbusd/blob/master/conf/mbusd.conf.example
 
 ```shell
-docker run -d -v /dev/serial:/dev/serial --privileged -v /etc/mbusd.conf:/opt/mbusd.conf -p 1502:1502  --name=mbusd  quenorha/mbusd
+ docker run -d -v /dev/serial:/dev/serial --privileged -v /etc/mbusd.conf:/opt/mbusd.conf -p 1502:502  --name=mbusd  quenorha/mbusd
 ```
 
-Run it interactively 
+Run it interactively (with verbosity set to the max level : -v9)
 
 ```shell
-docker run -ti -v /dev/serial:/dev/serial --privileged -p 1502:1502  --name=mbusd  quenorha/mbusd
+docker run -ti -v /dev/serial:/dev/serial --privileged -p 1502:502  --name=mbusd  quenorha/mbusd -v9
 ```
+
+Verbosity should be set to level 9 only for debugging purposes as it will consume a lot of CPU.
 
 #### Go further...
 
@@ -93,7 +97,6 @@ ln -s /etc/init.d/mbusd /etc/rc.d/S99_mbusd
 #### Useful File Locations
 
 * `/etc/config-tools/set_serial_mode` - script on host to set the mode for serial interface X3. Can be rs232 or rs485
-
 
 
 ## Find Us

@@ -1,11 +1,9 @@
 FROM alpine:latest
 
-EXPOSE 1502
+EXPOSE 502
 
 COPY . /opt
 RUN chmod +x /opt/build.sh
-RUN chmod +x /opt/entrypoint.sh
 RUN /opt/build.sh
 
-ENTRYPOINT [ "/sbin/tini", "--", "/opt/entrypoint.sh" ]
-
+ENTRYPOINT ["/opt/mbusd", "-d", "-L", "-", "-c", "/opt/mbusd.conf"]
